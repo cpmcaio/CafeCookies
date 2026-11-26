@@ -10,7 +10,24 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
+ALLOWED_HOSTS = [h.strip() for h in os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",") if h.strip()]
+CSRF_TRUSTED_ORIGINS = [
+    o.strip() for o in os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",") if o.strip()
+]
+
+# O Render informa o domínio público do serviço; libera host e origem do admin automaticamente
+_render_host = os.getenv("RENDER_EXTERNAL_HOSTNAME")
+if _render_host:
+    ALLOWED_HOSTS.append(_render_host)
+    CSRF_TRUSTED_ORIGINS.append(f"https://{_render_host}")
+
+# HTTPS=True em produção atrás de proxy (Render): redirecionamento, cookies seguros etc.
+HTTPS = os.getenv("HTTPS", "False") == "True"
+if HTTPS:
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 
 
 INSTALLED_APPS = [
@@ -67,6 +84,10 @@ DATABASES = {
         "PASSWORD": os.getenv("DB_PASSWORD", ""),
         "HOST": os.getenv("DB_HOST", "localhost"),
         "PORT": os.getenv("DB_PORT", "5432"),
+        # Supabase/Neon exigem SSL: use DB_SSLMODE=require
+        "OPTIONS": {"sslmode": os.getenv("DB_SSLMODE", "prefer")},
+        "CONN_MAX_AGE": int(os.getenv("DB_CONN_MAX_AGE", "60")),
+        "CONN_HEALTH_CHECKS": True,
     }
 }
 
