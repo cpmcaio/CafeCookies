@@ -1,0 +1,33 @@
+/* H7: skip link */
+.skip-link {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    background: #8C1A1A;
+    color: #F5EDE0;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0 0 8px 8px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    z-index: 9999;
+    transition: top 0.2s;
+}
+.skip-link:focus { top: 0; }
+
+/* H1: barra de progresso de scroll */
+#scroll-progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    width: 0%;
+    background: #B22222;
+    z-index: 9999;
+    transition: width 0.1s linear;
+}
+
+/* H4: foco visível consistente em todo o site */
+:focus-visible {
+    outline: 2px solid #B22222;
+    outline-offset: 3px;
+    border-radius: 4px;
+}
