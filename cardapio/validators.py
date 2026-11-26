@@ -5,6 +5,9 @@ TAMANHO_MAXIMO_IMAGEM = 3 * 1024 * 1024  # 3 MB
 
 
 def validar_imagem(imagem):
+    # só envios novos: arquivo já salvo não precisa (nem deve) ser consultado no storage
+    if getattr(imagem, "_committed", False):
+        return
     if imagem.size > TAMANHO_MAXIMO_IMAGEM:
         raise ValidationError("A imagem deve ter no máximo 3 MB.")
 

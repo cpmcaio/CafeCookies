@@ -109,8 +109,34 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+# Imagens enviadas pelo admin: no Supabase Storage (API compatível com S3) quando
+# SUPABASE_PROJECT_REF estiver definido; senão, na pasta local media/.
+SUPABASE_PROJECT_REF = os.getenv("SUPABASE_PROJECT_REF", "")
+
+if SUPABASE_PROJECT_REF:
+    _bucket = os.getenv("SUPABASE_S3_BUCKET", "media")
+    _midia = {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            "bucket_name": _bucket,
+            "endpoint_url": f"https://{SUPABASE_PROJECT_REF}.storage.supabase.co/storage/v1/s3",
+            "region_name": os.environ["SUPABASE_S3_REGION"],
+            "access_key": os.environ["SUPABASE_S3_ACCESS_KEY_ID"],
+            "secret_key": os.environ["SUPABASE_S3_SECRET_ACCESS_KEY"],
+            "addressing_style": "path",
+            "signature_version": "s3v4",
+            "default_acl": None,
+            "file_overwrite": False,
+            # bucket público: o site usa a URL pública, sem assinatura
+            "querystring_auth": False,
+            "custom_domain": f"{SUPABASE_PROJECT_REF}.supabase.co/storage/v1/object/public/{_bucket}",
+        },
+    }
+else:
+    _midia = {"BACKEND": "django.core.files.storage.FileSystemStorage"}
+
 STORAGES = {
-    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "default": _midia,
     # WhiteNoise serve os arquivos estáticos (CSS/JS/imagens) também em produção
     "staticfiles": {"BACKEND": "whitenoise.storage.CompressedStaticFilesStorage"},
 }

@@ -3,6 +3,7 @@ services:
     name: cafecookies
     runtime: python
     plan: free
+    region: virginia
     buildCommand: ./build.sh
     startCommand: gunicorn config.wsgi:application --bind 0.0.0.0:$PORT
     healthCheckPath: /
@@ -23,11 +24,22 @@ services:
       - key: DB_NAME
         value: postgres
       - key: DB_USER
-        sync: false
+        value: postgres.jiunbxgmguwnxnjidzvm
       - key: DB_PASSWORD
         sync: false
       - key: DB_SSLMODE
         value: require
+      # Imagens no Supabase Storage (Project Settings > Storage > S3)
+      - key: SUPABASE_PROJECT_REF
+        value: jiunbxgmguwnxnjidzvm
+      - key: SUPABASE_S3_REGION
+        value: us-east-1
+      - key: SUPABASE_S3_BUCKET
+        value: media
+      - key: SUPABASE_S3_ACCESS_KEY_ID
+        sync: false
+      - key: SUPABASE_S3_SECRET_ACCESS_KEY
+        sync: false
       # Admin: criado automaticamente no primeiro deploy
       - key: DJANGO_SUPERUSER_USERNAME
         sync: false
