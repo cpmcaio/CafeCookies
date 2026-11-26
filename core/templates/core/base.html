@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block meta_description %}Cookies artesanais feitos com amor em João Pessoa.{% endblock %}">
+    <title>{% block title %}CaFe Cookies{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'core/css/main.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- H7: skip link para teclado/leitores de tela -->
+    <a href="#conteudo-principal" class="skip-link">Ir para o conteúdo</a>
+
+    <div id="scroll-progress" aria-hidden="true"></div>
+
+    <main id="conteudo-principal">
+        {% block content %}{% endblock %}
+    </main>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
