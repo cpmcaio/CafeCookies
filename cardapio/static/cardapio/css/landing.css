@@ -3,14 +3,11 @@
    ========================================= */
 :root {
     --vermelho:        #8C1A1A;
-    --vermelho-escuro: #5C0A0A;
     --vermelho-vivo:   #B22222;
-    --vinho:           #5C1020;
-    --vinho-hover:     #6E1828;
+    --vinho:           #940b0e;
     --preto:           #0D0404;
-    --preto-suave:     #1A0808;
     --creme:           #F5EDE0;
-    --bege:            #E0C8A4;
+    --bege:            #fff5e3;
     --bege-suave:      #F2E8D6;
     --texto-escuro:    #2A1010;
 
@@ -26,7 +23,10 @@
    RESET & BASE
    ========================================= */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+html {
+    scroll-behavior: smooth;
+    scrollbar-color: var(--vinho) var(--bege);
+}
 
 body {
     background: var(--bege-suave);
@@ -147,144 +147,6 @@ img { display: block; max-width: 100%; }
 .back-to-top:hover { transform: translateY(-3px); }
 
 /* =========================================
-   NAVBAR
-   ========================================= */
-.navbar {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1.5rem;
-    padding: 0.6rem 5%;
-    background: var(--vinho);
-    transition: box-shadow var(--t), padding var(--t);
-}
-
-.navbar--scrolled {
-    box-shadow: 0 2px 16px rgba(0,0,0,.25);
-    padding-top: 0.4rem;
-    padding-bottom: 0.4rem;
-}
-
-.navbar__brand {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    flex-shrink: 0;
-}
-
-.navbar__logo-profile {
-    height: 56px;
-    width: 56px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.navbar__logo-escrita {
-    height: 90px;
-    object-fit: contain;
-}
-
-/* H1: estado ativo visível */
-.navbar__links {
-    display: flex;
-    align-items: center;
-    gap: 2.5rem;
-    flex: 1;
-    justify-content: center;
-}
-
-.nav-link {
-    font-size: 0.82rem;
-    font-weight: 400;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: rgba(245, 237, 224, 0.65);
-    transition: color var(--t);
-    position: relative;
-    padding-bottom: 2px;
-}
-
-.nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: -2px; left: 0;
-    width: 0; height: 2px;
-    background: var(--vermelho-vivo);
-    border-radius: 2px;
-    transition: width var(--t);
-}
-
-.nav-link:hover,
-.nav-link--active {
-    color: var(--creme);
-}
-
-.nav-link--active::after,
-.nav-link:hover::after { width: 100%; }
-
-.navbar__cta {
-    font-family: var(--fonte-titulo);
-    font-size: 1rem;
-    letter-spacing: 0.08em;
-    background: var(--vermelho);
-    color: var(--creme);
-    padding: 0.55rem 1.4rem;
-    border-radius: var(--raio);
-    transition: background var(--t), transform var(--t);
-    flex-shrink: 0;
-}
-.navbar__cta:hover {
-    background: var(--vermelho-vivo);
-    transform: translateY(-1px);
-}
-
-.navbar__toggle {
-    display: none;
-    flex-direction: column;
-    gap: 5px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 4px;
-}
-.navbar__toggle span {
-    display: block;
-    width: 22px;
-    height: 2px;
-    background: var(--creme);
-    border-radius: 2px;
-    transition: var(--t);
-}
-
-@media (max-width: 720px) {
-    .navbar__toggle { display: flex; }
-    .navbar__cta    { display: none; }
-
-    .navbar__links {
-        display: none;
-        position: absolute;
-        top: 100%; left: 0; right: 0;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0;
-        justify-content: flex-start;
-        background: var(--vinho);
-        border-top: 1px solid rgba(255,255,255,.08);
-    }
-    .navbar--open .navbar__links { display: flex; }
-    .navbar__links .nav-link {
-        display: block;
-        width: 100%;
-        padding: 1rem 5%;
-        border-bottom: 1px solid rgba(255,255,255,.08);
-    }
-    .navbar__links .nav-link::after { display: none; }
-}
-
-/* =========================================
    HERO
    ========================================= */
 .hero {
@@ -295,6 +157,31 @@ img { display: block; max-width: 100%; }
     padding: 10rem 5% 7rem;
     overflow: hidden;
     background: var(--bege-suave);
+}
+
+/* Carrossel de fundo + filtro claro para manter o texto do hero em destaque */
+.hero__carrossel {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+.hero__slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+}
+.hero__slide--ativo { opacity: 1; }
+.hero__filtro {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg,
+        rgba(255,245,227,.94) 0%,
+        rgba(255,245,227,.82) 45%,
+        rgba(255,245,227,.45) 100%);
 }
 
 .hero__grain {
@@ -341,7 +228,7 @@ img { display: block; max-width: 100%; }
 
 .hero__title {
     font-family: var(--fonte-titulo);
-    font-size: clamp(5.5rem, 13vw, 11.5rem);
+    font-size: clamp(4rem, 13vw, 11.5rem);
     line-height: 0.88;
     letter-spacing: 0.01em;
     color: var(--texto-escuro);
@@ -383,8 +270,8 @@ img { display: block; max-width: 100%; }
     position: absolute;
     right: 8%;
     bottom: 15%;
-    width: 110px;
-    height: 110px;
+    width: 170px;
+    height: 170px;
     background: var(--vermelho);
     border-radius: 50%;
     display: flex;
@@ -392,8 +279,9 @@ img { display: block; max-width: 100%; }
     align-items: center;
     justify-content: center;
     font-family: var(--fonte-titulo);
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     line-height: 1;
+    gap: 0.7rem;
     letter-spacing: 0.05em;
     color: var(--creme);
     animation: spin 20s linear infinite;
@@ -419,7 +307,7 @@ img { display: block; max-width: 100%; }
     font-size: 0.65rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: rgba(42,16,16,.35);
+    color: var(--vinho);
     opacity: 0;
     animation: fade-up 0.6s 1.1s forwards;
 }
@@ -428,7 +316,7 @@ img { display: block; max-width: 100%; }
     display: block;
     width: 1px;
     height: 48px;
-    background: linear-gradient(to bottom, transparent, rgba(42,16,16,.25));
+    background: linear-gradient(to bottom, transparent, var(--vinho));
     animation: scroll-line 2s ease-in-out infinite;
 }
 
@@ -498,119 +386,25 @@ img { display: block; max-width: 100%; }
 .section-sub {
     font-size: 1rem;
     font-weight: 300;
-    color: #7a4a30;
+    color: var(--vinho);
     line-height: 1.6;
 }
 
 .section-header {
     display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 2rem;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
     margin-bottom: 3.5rem;
 }
 .section-header--light .section-sub { color: rgba(224,200,164,.7); }
-
-/* =========================================
-   CARDÁPIO
-   ========================================= */
-.cardapio {
-    background: var(--bege-suave);
-    padding: 7rem 0;
-}
-
-.cardapio__grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
-}
-
-/* H7: animação de entrada */
-.cookie-card {
-    background: #fff;
-    border-radius: var(--raio-lg);
-    overflow: hidden;
-    transition: transform var(--t), box-shadow var(--t);
-    opacity: 0;
-    transform: translateY(20px);
-}
-.cookie-card.is-visible {
-    opacity: 1;
-    transform: translateY(0);
-    transition: opacity 0.5s ease, transform 0.5s ease, box-shadow var(--t);
-}
-.cookie-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 20px 44px rgba(140,26,26,.14);
-}
-
-.cookie-card__img-wrap {
-    position: relative;
-    aspect-ratio: 4/3;
-    overflow: hidden;
-    background: var(--bege);
-}
-
-.cookie-card__placeholder-img {
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #e8d5b7 0%, #c9a06a 100%);
-}
-
-.cookie-card__badge {
-    position: absolute;
-    top: 0.9rem;
-    left: 0.9rem;
-    background: var(--vermelho);
-    color: var(--creme);
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 0.25rem 0.65rem;
-    border-radius: 100px;
-}
-
-.cookie-card__body {
-    padding: 1.4rem 1.6rem 1.6rem;
-}
-
-.cookie-card__name {
-    font-family: var(--fonte-titulo);
-    font-size: 1.9rem;
-    letter-spacing: 0.03em;
-    color: var(--texto-escuro);
-    margin-bottom: 0.4rem;
-}
-
-.cookie-card__desc {
-    font-size: 0.88rem;
-    font-weight: 200;
-    color: #7a5a40;
-    line-height: 1.5;
-    margin-bottom: 1.2rem;
-}
-
-.cookie-card__footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-}
-
-.cookie-card__price {
-    font-family: var(--fonte-titulo);
-    font-size: 1.5rem;
-    color: var(--vermelho);
-}
 
 /* =========================================
    HORÁRIOS
    ========================================= */
 .horarios {
     position: relative;
-    background: var(--vermelho-escuro);
+    background: var(--vinho);
     padding: 7rem 0;
     overflow: hidden;
 }
@@ -621,6 +415,12 @@ img { display: block; max-width: 100%; }
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
     opacity: 0.07;
     pointer-events: none;
+}
+
+/* conteúdo acima do granulado, para as cores dos cards não serem alteradas por ele */
+.horarios .container {
+    position: relative;
+    z-index: 1;
 }
 
 .horarios__grid {
@@ -642,12 +442,16 @@ img { display: block; max-width: 100%; }
 .horario-card.is-visible {
     opacity: 1;
     transform: none;
-    transition: opacity 0.5s ease, transform 0.5s ease, background var(--t);
+    animation: item-aparecer 0.6s ease var(--delay, 0s) backwards;
+}
+
+@keyframes item-aparecer {
+    from { opacity: 0; transform: translateY(20px); }
 }
 .horario-card:hover { background: rgba(255,255,255,.12); }
 
 .horario-card--destaque {
-    background: var(--vermelho);
+    background: #6b080b;
     border-color: transparent;
 }
 
@@ -731,7 +535,11 @@ img { display: block; max-width: 100%; }
 .contato__btn.is-visible {
     opacity: 1;
     transform: none;
-    transition: opacity 0.5s ease, transform 0.5s ease, box-shadow var(--t);
+    animation: item-aparecer-lado 0.6s ease var(--delay, 0s) backwards;
+}
+
+@keyframes item-aparecer-lado {
+    from { opacity: 0; transform: translateX(24px); }
 }
 .contato__btn:hover {
     transform: translateX(5px);
@@ -787,54 +595,12 @@ img { display: block; max-width: 100%; }
     transform: translateX(3px);
 }
 
-/* =========================================
-   FOOTER
-   ========================================= */
-.footer {
-    background: var(--bege);
-    border-top: 1px solid rgba(42,16,16,.1);
-    padding: 3.5rem 5%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.25rem;
-    text-align: center;
-}
-
-.footer__logo {
-    height: 96px;
-    object-fit: contain;
-    opacity: 0.85;
-    transition: opacity var(--t);
-}
-.footer__logo:hover { opacity: 1; }
-
-.footer__nav {
-    display: flex;
-    gap: 2rem;
-}
-.footer__nav a {
-    font-size: 0.8rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgba(42,16,16,.4);
-    transition: color var(--t);
-}
-.footer__nav a:hover { color: var(--texto-escuro); }
-
-.footer__copy {
-    font-size: 0.75rem;
-    color: rgba(42,16,16,.35);
-    letter-spacing: 0.04em;
-}
 
 /* =========================================
    RESPONSIVO
    ========================================= */
 @media (max-width: 600px) {
     .hero__badge { display: none; }
-    .section-header { flex-direction: column; align-items: flex-start; }
     .contato__inner { flex-direction: column; align-items: flex-start; }
     .contato__links { width: 100%; }
-    .footer__nav { flex-wrap: wrap; justify-content: center; gap: 1rem; }
 }

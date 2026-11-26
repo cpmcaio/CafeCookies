@@ -1,0 +1,45 @@
+/* =========================================
+   FOOTER
+   ========================================= */
+.footer {
+    background: var(--bege);
+    border-top: 1px solid rgba(148,11,14,.15);
+    padding: 3.5rem 5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    text-align: center;
+}
+
+.footer__logo {
+    height: 180px;
+    width: auto;
+    object-fit: contain;
+    opacity: 0.85;
+    transition: opacity var(--t);
+}
+.footer__logo:hover { opacity: 1; }
+
+.footer__nav {
+    display: flex;
+    gap: 2rem;
+}
+.footer__nav a {
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(148,11,14,.75);
+    transition: color var(--t);
+}
+.footer__nav a:hover { color: var(--vinho); }
+
+.footer__copy {
+    font-size: 0.75rem;
+    color: rgba(148,11,14,.6);
+    letter-spacing: 0.04em;
+}
+
+@media (max-width: 600px) {
+    .footer__nav { flex-wrap: wrap; justify-content: center; gap: 1rem; }
+}

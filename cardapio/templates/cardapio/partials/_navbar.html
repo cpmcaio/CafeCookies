@@ -1,0 +1,24 @@
+{% load static %}
+<!-- ───── NAVBAR ───── -->
+<header id="topo">
+<nav class="navbar" id="navbar" aria-label="Navegação principal">
+    <a href="#topo" class="navbar__brand" aria-label="CaFe Cookies — início">
+        <img src="{% static 'cardapio/img/logo-vermelha-bege-800.png' %}" alt="" class="navbar__logo-profile" aria-hidden="true">
+    </a>
+
+    {# H6: labels explícitos + indicador de seção ativa #}
+    <ul class="navbar__links" role="list">
+        <li><a href="#cardapio"  class="nav-link" data-section="cardapio">Cardápio</a></li>
+        <li><a href="#horarios"  class="nav-link" data-section="horarios">Horários</a></li>
+        <li><a href="#contato"   class="nav-link" data-section="contato">Contato</a></li>
+    </ul>
+
+    <a href="#contato" class="navbar__cta" aria-label="Fazer pedido agora">Fazer Pedido</a>
+
+    <button class="navbar__toggle" aria-label="Abrir menu" aria-expanded="false" id="menu-toggle">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+    </button>
+</nav>
+</header>

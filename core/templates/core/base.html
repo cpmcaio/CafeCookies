@@ -6,6 +6,8 @@
     <meta name="description" content="{% block meta_description %}Cookies artesanais feitos com amor em João Pessoa.{% endblock %}">
     <title>{% block title %}CaFe Cookies{% endblock %}</title>
     {% load static %}
+    <link rel="icon" type="image/png" href="{% static 'cardapio/img/favicon.png' %}">
+    {% block og %}{% endblock %}
     <link rel="stylesheet" href="{% static 'core/css/main.css' %}">
     {% block extra_css %}{% endblock %}
 </head>

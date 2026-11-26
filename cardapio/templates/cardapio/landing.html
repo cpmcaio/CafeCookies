@@ -4,11 +4,27 @@
 {% block title %}CaFe Cookies — Muito Gostoso. Muito Equilibrado.{% endblock %}
 {% block meta_description %}Cookies artesanais feitos na hora em João Pessoa. Peça pelo Instagram ou WhatsApp.{% endblock %}
 
+{% block og %}
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="CaFe Cookies">
+<meta property="og:title" content="CaFe Cookies — Muito Gostoso. Muito Equilibrado.">
+<meta property="og:description" content="Cookies artesanais feitos na hora em João Pessoa. Peça pelo Instagram ou WhatsApp.">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'cardapio/img/og-image.png' %}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+{% endblock %}
+
 {% block extra_css %}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'cardapio/css/landing.css' %}">
+<link rel="stylesheet" href="{% static 'cardapio/css/partials/navbar.css' %}">
+<link rel="stylesheet" href="{% static 'cardapio/css/partials/cards.css' %}">
+<link rel="stylesheet" href="{% static 'cardapio/css/partials/footer.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -16,32 +32,18 @@
 {# H3: o usuário consegue voltar ao topo / navegar livremente #}
 <a href="#topo" class="back-to-top" id="back-to-top" aria-label="Voltar ao topo">↑</a>
 
-<!-- ───── NAVBAR ───── -->
-<header id="topo">
-<nav class="navbar" id="navbar" aria-label="Navegação principal">
-    <a href="#topo" class="navbar__brand" aria-label="CaFe Cookies — início">
-        <img src="{% static 'cardapio/img/logo-profile.png' %}" alt="" class="navbar__logo-profile" aria-hidden="true">
-    </a>
-
-    {# H6: labels explícitos + indicador de seção ativa #}
-    <ul class="navbar__links" role="list">
-        <li><a href="#cardapio"  class="nav-link" data-section="cardapio">Cardápio</a></li>
-        <li><a href="#horarios"  class="nav-link" data-section="horarios">Horários</a></li>
-        <li><a href="#contato"   class="nav-link" data-section="contato">Contato</a></li>
-    </ul>
-
-    <a href="#contato" class="navbar__cta" aria-label="Fazer pedido agora">Fazer Pedido</a>
-
-    <button class="navbar__toggle" aria-label="Abrir menu" aria-expanded="false" id="menu-toggle">
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-    </button>
-</nav>
-</header>
+{% include "cardapio/partials/_navbar.html" %}
 
 <!-- ───── HERO ───── -->
 <section class="hero" aria-label="Apresentação">
+    {% if slides %}
+    <div class="hero__carrossel" aria-hidden="true">
+        {% for slide in slides %}
+        <img src="{{ slide.imagem.url }}" alt="" class="hero__slide{% if forloop.first %} hero__slide--ativo{% endif %}"{% if not forloop.first %} loading="lazy"{% endif %}>
+        {% endfor %}
+        <div class="hero__filtro"></div>
+    </div>
+    {% endif %}
     <div class="hero__grain" aria-hidden="true"></div>
     <div class="hero__blob" aria-hidden="true"></div>
 
@@ -116,25 +118,11 @@
             <p class="section-sub">Cada cookie é feito artesanalmente,<br>com ingredientes selecionados.</p>
         </div>
 
-        <div class="cardapio__grid" role="list">
-            {# Produtos virão do banco na próxima etapa — placeholders abaixo #}
-            {% for item in produtos|default:"1,2,3" %}
-            <article class="cookie-card" role="listitem">
-                <div class="cookie-card__img-wrap" aria-hidden="true">
-                    <div class="cookie-card__placeholder-img"></div>
-                    <div class="cookie-card__badge">Destaque</div>
-                </div>
-                <div class="cookie-card__body">
-                    <h3 class="cookie-card__name">Cookie</h3>
-                    <p class="cookie-card__desc">Massa amanteigada com ingredientes selecionados e muito sabor.</p>
-                    <div class="cookie-card__footer">
-                        <span class="cookie-card__price">R$ 00,00</span>
-                        <a href="#contato" class="btn btn--small" aria-label="Pedir este cookie">Pedir</a>
-                    </div>
-                </div>
-            </article>
-            {% endfor %}
-        </div>
+        {% if produtos %}
+            {% include "cardapio/partials/_cards.html" with produtos=produtos %}
+        {% else %}
+            <p class="cardapio__vazio" role="status">Sem produtos registrados</p>
+        {% endif %}
     </div>
 </section>
 
@@ -194,7 +182,7 @@
                 <span class="contato__btn-arrow" aria-hidden="true">→</span>
             </a>
 
-            <a href="https://wa.me/55" target="_blank" rel="noopener noreferrer"
+            <a href="https://wa.me/5583991421161?text=Ol%C3%A1%2C%20quero%20fazer%20um%20pedido" target="_blank" rel="noopener noreferrer"
                class="contato__btn contato__btn--whats" role="listitem"
                aria-label="Enviar mensagem pelo WhatsApp (abre nova aba)">
                 <span class="contato__btn-icon" aria-hidden="true">
@@ -210,16 +198,7 @@
     </div>
 </section>
 
-<!-- ───── FOOTER ───── -->
-<footer class="footer">
-    <img src="{% static 'cardapio/img/logo-escrita.png' %}" alt="CaFe Cookies" class="footer__logo">
-    <nav class="footer__nav" aria-label="Rodapé">
-        <a href="#cardapio">Cardápio</a>
-        <a href="#horarios">Horários</a>
-        <a href="#contato">Contato</a>
-    </nav>
-    <p class="footer__copy">© {% now "Y" %} CaFe Cookies · @cafecookiesjp · Feito com muito amor (e manteiga)</p>
-</footer>
+{% include "cardapio/partials/_footer.html" %}
 
 {% endblock %}
 
@@ -273,15 +252,32 @@
         });
     });
 
-    // H7: anima elementos quando entram na viewport
+    // carrossel do hero: troca de slide a cada 5s (respeita prefers-reduced-motion)
+    const slides = document.querySelectorAll('.hero__slide');
+    if (slides.length > 1 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        let atual = 0;
+        setInterval(() => {
+            slides[atual].classList.remove('hero__slide--ativo');
+            atual = (atual + 1) % slides.length;
+            slides[atual].classList.add('hero__slide--ativo');
+        }, 5000);
+    }
+
+    // H7: anima elementos quando entram na viewport, um após o outro (escalonado)
+    const PASSO = 0.18; // segundos entre um card e o seguinte
     const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
-                observer.unobserve(entry.target);
-            }
+        const visiveis = entries
+            .filter(entry => entry.isIntersecting)
+            .sort((a, b) => {
+                const ra = a.boundingClientRect, rb = b.boundingClientRect;
+                return (ra.top - rb.top) || (ra.left - rb.left);
+            });
+        visiveis.forEach((entry, i) => {
+            entry.target.style.setProperty('--delay', (i * PASSO) + 's');
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
         });
-    }, { threshold: 0.12 });
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
 
     document.querySelectorAll('.cookie-card, .horario-card, .contato__btn').forEach(el => {
         observer.observe(el);

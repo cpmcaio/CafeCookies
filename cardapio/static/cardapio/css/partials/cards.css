@@ -1,0 +1,145 @@
+/* =========================================
+   CARDÁPIO
+   ========================================= */
+.cardapio {
+    background: var(--bege-suave);
+    padding: 7rem 0;
+}
+
+.cardapio__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 370px));
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+/* H7: animação de entrada */
+.cookie-card {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: var(--raio-lg);
+    overflow: hidden;
+    transition: transform var(--t), box-shadow var(--t);
+    opacity: 0;
+    transform: translateY(20px);
+}
+/* entrada escalonada: o JS define --delay conforme a ordem em que os cards entram na tela */
+.cookie-card.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    animation: card-aparecer 0.6s ease var(--delay, 0s) backwards;
+}
+
+@keyframes card-aparecer {
+    from { opacity: 0; transform: translateY(28px); }
+}
+.cookie-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 44px rgba(140,26,26,.14);
+}
+
+.cookie-card__img-wrap {
+    position: relative;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    background: var(--bege);
+}
+
+.cookie-card__placeholder-img {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #e8d5b7 0%, #c9a06a 100%);
+}
+
+.cookie-card__badge {
+    position: absolute;
+    top: 0.9rem;
+    left: 0.9rem;
+    background: var(--vermelho);
+    color: var(--creme);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.65rem;
+    border-radius: 100px;
+}
+
+.cookie-card__body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 1.4rem 1.6rem 1.6rem;
+}
+
+.cookie-card__name {
+    font-family: var(--fonte-titulo);
+    font-size: 1.9rem;
+    letter-spacing: 0.03em;
+    color: var(--texto-escuro);
+    margin-bottom: 0.4rem;
+}
+
+.cookie-card__desc {
+    font-size: 0.88rem;
+    font-weight: 200;
+    color: #7a5a40;
+    line-height: 1.5;
+    margin-bottom: 1.2rem;
+}
+
+.cookie-card__footer {
+    margin-top: auto; /* rodapé alinhado na base, mesmo com preço antigo riscado */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.cookie-card__price {
+    font-family: var(--fonte-titulo);
+    font-size: 1.5rem;
+    color: var(--vermelho);
+}
+
+/* Estado vazio: sem produtos registrados */
+.cardapio__vazio {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    border: 2px dashed var(--vinho);
+    border-radius: var(--raio-lg);
+    color: var(--vinho);
+    font-family: var(--fonte-titulo);
+    font-size: 1.8rem;
+    letter-spacing: 0.04em;
+}
+
+/* Selo de oferta */
+.cookie-card__oferta {
+    position: absolute;
+    top: 0.9rem;
+    right: 0.9rem;
+    background: var(--bege);
+    color: var(--vinho);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.7rem;
+    border-radius: 100px;
+}
+
+.cookie-card__price-old {
+    display: block;
+    font-family: var(--fonte-corpo);
+    font-size: 0.85rem;
+    opacity: 0.6;
+}
+
+.cookie-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}

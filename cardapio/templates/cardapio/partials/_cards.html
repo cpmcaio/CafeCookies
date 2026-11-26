@@ -1,0 +1,28 @@
+<div class="cardapio__grid" role="list">
+    {% for produto in produtos %}
+    <article class="cookie-card" role="listitem">
+        <div class="cookie-card__img-wrap">
+            {% if produto.imagem %}
+            <img src="{{ produto.imagem.url }}" alt="{{ produto.nome }}" class="cookie-card__img" loading="lazy">
+            {% else %}
+            <div class="cookie-card__placeholder-img" aria-hidden="true"></div>
+            {% endif %}
+            {% if produto.destaque %}<div class="cookie-card__badge">Destaque</div>{% endif %}
+            {% if produto.oferta_vigente %}<div class="cookie-card__oferta">{{ produto.oferta_vigente.rotulo_exibicao }}</div>{% endif %}
+        </div>
+        <div class="cookie-card__body">
+            <h3 class="cookie-card__name">{{ produto.nome }}</h3>
+            <p class="cookie-card__desc">{{ produto.descricao }}</p>
+            <div class="cookie-card__footer">
+                <span class="cookie-card__price">
+                    {% if produto.oferta_vigente %}<s class="cookie-card__price-old">R$ {{ produto.preco|floatformat:"2g" }}</s>{% endif %}
+                    R$ {{ produto.preco_final|floatformat:"2g" }}
+                </span>
+                <a href="https://wa.me/5583991421161?text=Ol%C3%A1%2C%20quero%20pedir%20{{ produto.nome|urlencode }}"
+                   target="_blank" rel="noopener noreferrer" class="btn btn--small"
+                   aria-label="Pedir {{ produto.nome }} pelo WhatsApp (abre nova aba)">Pedir</a>
+            </div>
+        </div>
+    </article>
+    {% endfor %}
+</div>

@@ -1,0 +1,176 @@
+/* =========================================
+   NAVBAR
+   ========================================= */
+.navbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 0.6rem 5%;
+    /* no topo a navbar é 100% transparente; o fundo vinho aparece ao rolar (::before) */
+    background: transparent;
+    transition: box-shadow var(--t), padding var(--t);
+    animation: navbar-entrar 0.7s ease backwards;
+}
+
+/* fundo vinho 100% opaco, revelado ao descer a página */
+.navbar::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--vinho);
+    opacity: 0;
+    transition: opacity var(--t);
+    pointer-events: none;
+}
+
+@keyframes navbar-entrar {
+    from { transform: translateY(-100%); opacity: 0; }
+}
+
+.navbar--scrolled {
+    box-shadow: 0 2px 16px rgba(0,0,0,.25);
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+}
+.navbar--scrolled::before { opacity: 1; }
+
+/* logo, botão e menu hambúrguer: invisíveis no topo, aparecem ao rolar */
+.navbar__brand,
+.navbar__cta,
+.navbar__toggle {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--t), visibility var(--t), background var(--t), transform var(--t);
+}
+.navbar--scrolled .navbar__brand,
+.navbar--scrolled .navbar__cta,
+.navbar--scrolled .navbar__toggle,
+.navbar--open .navbar__toggle { /* menu aberto mantém o botão para poder fechar */
+    opacity: 1;
+    visibility: visible;
+}
+
+.navbar__brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
+}
+
+/* Logo recortada em cima e embaixo (área vazia) e ampliada */
+.navbar__logo-profile {
+    width: 260px;
+    height: auto;
+    aspect-ratio: 2000 / 540;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+/* H1: estado ativo visível */
+.navbar__links {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+    flex: 1;
+    justify-content: center;
+}
+
+.nav-link {
+    font-size: 0.82rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--vinho);
+    transition: color var(--t);
+    position: relative;
+    padding-bottom: 2px;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0;
+    width: 0; height: 2px;
+    background: var(--vinho);
+    border-radius: 2px;
+    transition: width var(--t), background var(--t);
+}
+
+/* ao rolar, os textos assumem as cores do estado com fundo vinho */
+.navbar--scrolled .nav-link { color: rgba(255, 245, 227, 0.7); }
+.navbar--scrolled .nav-link::after { background: var(--bege); }
+.navbar--scrolled .nav-link:hover,
+.navbar--scrolled .nav-link--active { color: var(--bege); }
+
+.nav-link--active::after,
+.nav-link:hover::after { width: 100%; }
+
+.navbar__cta {
+    font-family: var(--fonte-titulo);
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    background: #6b080b;
+    color: var(--creme);
+    padding: 0.55rem 1.4rem;
+    border-radius: var(--raio);
+    transition: background var(--t), transform var(--t);
+    flex-shrink: 0;
+}
+.navbar__cta:hover {
+    background: var(--vinho);
+    transform: translateY(-1px);
+}
+
+.navbar__toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+}
+.navbar__toggle span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--vinho);
+    border-radius: 2px;
+    transition: var(--t);
+}
+
+@media (max-width: 720px) {
+    .navbar__logo-profile { width: 190px; }
+    .navbar__toggle { display: flex; }
+    .navbar__cta    { display: none; }
+
+    .navbar__links {
+        display: none;
+        position: absolute;
+        top: 100%; left: 0; right: 0;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+        justify-content: flex-start;
+        background: var(--vinho);
+        border-top: 1px solid rgba(255,255,255,.08);
+    }
+    .navbar--open .navbar__links { display: flex; }
+    .navbar__links .nav-link {
+        display: block;
+        width: 100%;
+        padding: 1rem 5%;
+        border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .navbar__links .nav-link::after { display: none; }
+    /* menu aberto: painel vinho, links claros */
+    .navbar--open .navbar__links .nav-link { color: var(--bege); }
+    /* o botão do menu precisa existir no topo, mesmo com a navbar transparente */
+    .navbar--scrolled .navbar__toggle span { background: var(--bege); }
+}
