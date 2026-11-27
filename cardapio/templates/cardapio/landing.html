@@ -44,6 +44,7 @@
         <div class="hero__filtro"></div>
     </div>
     {% endif %}
+    <div id="hero-canvas" class="hero__canvas" aria-hidden="true"></div>
     <div class="hero__grain" aria-hidden="true"></div>
     <div class="hero__blob" aria-hidden="true"></div>
 
@@ -203,6 +204,37 @@
 {% endblock %}
 
 {% block extra_js %}
+
+<script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.167.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.167.0/examples/jsm/"
+        }
+    }
+</script>
+<script>
+window.COOKIE_MODEL_URLS = {
+    cookies: [
+        "{% static 'cardapio/models/Cookie1.obj' %}",
+        "{% static 'cardapio/models/Cookie2.obj' %}",
+        "{% static 'cardapio/models/Cookie3.obj' %}",
+        "{% static 'cardapio/models/Cookie4.obj' %}"
+    ],
+    crumbs: [
+        "{% static 'cardapio/models/Crumb1.obj' %}",
+        "{% static 'cardapio/models/Crumb2.obj' %}",
+        "{% static 'cardapio/models/Crumb3.obj' %}",
+        "{% static 'cardapio/models/Crumb4.obj' %}"
+    ],
+    textures: {
+        albedo:    "{% static 'cardapio/models/textures/Cookies_Albedo.tga' %}",
+        normal:    "{% static 'cardapio/models/textures/Cookies_Normal.tga' %}",
+        roughness: "{% static 'cardapio/models/textures/Cookies_Roughness.tga' %}"
+    }
+};
+</script>
+<script type="module" src="{% static 'cardapio/js/index.js' %}"></script>
 <script>
 (function () {
     // H1: progresso de scroll

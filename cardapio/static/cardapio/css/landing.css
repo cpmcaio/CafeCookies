@@ -154,9 +154,18 @@ img { display: block; max-width: 100%; }
     min-height: 100svh;
     display: flex;
     align-items: center;
-    padding: 10rem 5% 7rem;
+    padding: 3rem 5% 7rem;
     overflow: hidden;
     background: var(--bege-suave);
+}
+
+.hero__canvas {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
 
 /* Carrossel de fundo + filtro claro para manter o texto do hero em destaque */
@@ -600,6 +609,38 @@ img { display: block; max-width: 100%; }
    RESPONSIVO
    ========================================= */
 @media (max-width: 600px) {
+    /* Zona 1 (texto) fica no topo com altura natural.
+       O espaço restante vira zona dos cookies 3D.
+       O scroll fica absolutamente posicionado sem conflito. */
+    .hero {
+        align-items: flex-start;
+        padding: 3.5rem 6% 2rem;
+    }
+    .hero__content {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+    .hero__eyebrow {
+        letter-spacing: 0.1em;
+        margin-bottom: 6rem;
+    }
+    .hero__title {
+        margin-top: 0;
+        margin-bottom: 1.5rem;
+    }
+    .hero__sub {
+        margin-bottom: 3.75rem;
+    }
+    .hero__scroll {
+        bottom: 4rem;
+    }
+    .hero__actions {
+        flex-direction: column;
+        align-items: stretch;
+        margin-top: 0;
+        gap: 0.75rem;
+    }
     .hero__badge { display: none; }
     .contato__inner { flex-direction: column; align-items: flex-start; }
     .contato__links { width: 100%; }
